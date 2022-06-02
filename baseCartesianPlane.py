@@ -160,8 +160,8 @@ class CartesianPlane:
             return
 
         self.displayAllPoints()
-        firstPoint, secondPoint = self.__askUserForPoints(2)
-        points = self.__convertInputToPoints([firstPoint, secondPoint])
+        inputs = self.__askUserForPoints(2)
+        points = self.__convertInputToPoints(inputs)
         coordinates = self.__getXandYCoordinatesOfPoints(points)
         distance = self.__solveDistanceBetweenTwoPoints(coordinates) 
         print(f'\nThe distance is {distance}\n')
