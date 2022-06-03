@@ -45,21 +45,21 @@ Methods:
 ##Utility Functions
 (Utility functions are used inside methods. Reusable codes): 
 
-###__getPointXandYCoordinates()
+### __getPointXandYCoordinates()
 This will only ask the user for x and y coordinates for a point.
 
-###__getPointName()
+### __getPointName()
 This will ask the user for a point name.
 
 
-###__getPointFromIndex(index: int)
+### __getPointFromIndex(index: int)
 This will return the point in the given index from listOfPoints
 
 
-###__getPointFromName(name: str)
+### __getPointFromName(name: str)
 This will return the point in which the name of the point is equal to the argument
 
-###__askUserForPoints(numberOfPoints: int)
+### __askUserForPoints(numberOfPoints: int)
 This function will ask the user which points to be used depending on the given numberOfPoints. If numberOfPoints is 3 then this function will only ask for 3 inputs. This will return the inputs of the user in an array/list. i.e. [a, b] for name or [0, 3] for index
 
 ```python
@@ -87,7 +87,8 @@ inputs = self.__askUserForPoints(2)
 # secondInput = b
 ```
 
-- __convertInputToPoints(inputs: any[]) - this function will use the inputs from __askUserForInputs and return its corresponding Point on the cartesian plane.
+### __convertInputToPoints(inputs: any[])
+This function will use the inputs from __askUserForInputs and return its corresponding Point on the cartesian plane.
 
 ```python
 # when you have inputs from users about which points to use, you can convert
@@ -100,7 +101,8 @@ points = self.__convertInputToPoints(inputs)
 # OUTPUT: [Point a, Point b]
 ```
 
-- __getXandYCoordinatesOfPoints(points: Point[]) - this function will use the points returned by __convertInputToPoints and get all x and y coordinates of each point. i.e. {’firstX’: 0, ‘firstY’: 1}
+### __getXandYCoordinatesOfPoints(points: Point[])
+This function will use the points returned by __convertInputToPoints and get all x and y coordinates of each point. i.e. {’firstX’: 0, ‘firstY’: 1}
 
 ```python
 # Now that you have the corresponding points of the user inputs, you can get 
@@ -124,7 +126,8 @@ coordinates = self.__getXandYCoordinatesOfPoints(points)
 # of y coordinate of Point a. So on and so forth.
 ```
 
-- __solveDistanceBetweenTwoPoints(coordinates: dictionary) - using the formula sqrt((x2-x1)^2 + (y2-y1)^2), this will solve the distance between two points wherein their x and y coordinates are inside the coordinates dictionary (parameter).
+### __solveDistanceBetweenTwoPoints(coordinates: dictionary)
+Using the formula sqrt((x2-x1)^2 + (y2-y1)^2), this will solve the distance between two points wherein their x and y coordinates are inside the coordinates dictionary (parameter).
 
 ```python
 def distanceBetweenTwoPoints(self):
