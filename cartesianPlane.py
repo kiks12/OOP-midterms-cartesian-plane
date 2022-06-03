@@ -147,7 +147,6 @@ class CartesianPlane:
         return slope
 
 
-
     # solution for distance between two points 
     # d = sqrt((x2-x1)^2 + (y2-y1)^2)
     # this is a private utility function for the distanceBetweenTwoPoints method
