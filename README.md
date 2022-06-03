@@ -5,6 +5,9 @@ Classes:
 - Point
 - Plane (Cartesian Plane)
 
+<br>
+<br>
+
 ## Point
 
 Properties:
@@ -17,6 +20,9 @@ Properties:
 Methods: 
 
 - getCoordinates - will return the x and y coordinates of the point in an array i.e. [0,1]
+
+<br>
+<br>
 
 ## **Cartesian Plane**
 
@@ -52,6 +58,7 @@ determine the distance between two points
     
 <br>
 <br>
+
 ## Utility Functions
 (Utility functions are used inside methods. Reusable codes): 
 
