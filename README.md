@@ -42,16 +42,25 @@ Methods:
     - calculate the distance between two points
     
 
-Utility Functions (Utility functions are used inside methods. Reusable codes): 
+##Utility Functions
+(Utility functions are used inside methods. Reusable codes): 
 
-- __getPointXandYCoordinates - will only ask the user for x and y coordinates for a point.
-- __getPointName - will ask the user for a point name.
-- __getPointFromIndex(index: int) - this will return the point in the given index from listOfPoints
-- __getPointFromName(name: str) - this will return the point in which the name of the point is equal to the argument
+###__getPointXandYCoordinates()
+This will only ask the user for x and y coordinates for a point.
 
-- __askUserForPoints(numberOfPoints: int)
-    - this function will ask the user which points to be used depending on the given numberOfPoints. If numberOfPoints is 3 then this function will only ask for 3 inputs
-    - will return the inputs of the user in an array/list. i.e. [a, b] for name or [0, 3] for index
+###__getPointName()
+This will ask the user for a point name.
+
+
+###__getPointFromIndex(index: int)
+This will return the point in the given index from listOfPoints
+
+
+###__getPointFromName(name: str)
+This will return the point in which the name of the point is equal to the argument
+
+###__askUserForPoints(numberOfPoints: int)
+This function will ask the user which points to be used depending on the given numberOfPoints. If numberOfPoints is 3 then this function will only ask for 3 inputs. This will return the inputs of the user in an array/list. i.e. [a, b] for name or [0, 3] for index
 
 ```python
 # if you want to ask users which points to use for, example, solving the distance
