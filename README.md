@@ -27,14 +27,23 @@ Properties:
 
 Methods: 
 
-- addPoint - used for adding a single point in the cartesian plane
-- addMultiplePoints - used to add multiple points in the cartesian plane
-    - Asks the user how many points to add
-    - input Error on 1 - send an error message if the user inputs 1 as the number of points to add.
-- displayAllPoints - will print all points in the cartesian plane (listOfPoints)
-- getPoint(input :str/int) - will return the point using the input from the user
-- getNumberOfPoints - this will return the length of listOfPoints
-- distanceBetweenTwoPoints - determine the distance between two points
+### addPoint
+Used for adding a single point in the cartesian plane
+
+### addMultiplePoints
+Used to add multiple points in the cartesian plane. Asks the user how many points to add. Input Error on 1 - send an error message if the user inputs 1 as the number of points to add.
+
+### displayAllPoints
+will print all points in the cartesian plane (listOfPoints)
+
+### getPoint(input :str/int)
+will return the point using the input from the user
+
+### getNumberOfPoints
+this will return the length of listOfPoints
+
+### distanceBetweenTwoPoints
+determine the distance between two points
     - should send an error message if the points are insufficient
     - should also send an error message if the points are not in the listOfIndex
     - show the points to users
@@ -42,7 +51,7 @@ Methods:
     - calculate the distance between two points
     
 
-##Utility Functions
+## Utility Functions
 (Utility functions are used inside methods. Reusable codes): 
 
 ### __getPointXandYCoordinates()
