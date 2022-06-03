@@ -134,16 +134,16 @@ def distanceBetweenTwoPoints(self):
 	if len(self.__listOfPoints) < 2:
 			print('\nCannot execute because number of points is Insufficient\n')
 		  return
-
-  self.displayAllPoints()
-  inputs = self.__askUserForPoints(2)
-  points = self.__convertInputToPoints(inputs)
-  coordinates = self.__getXandYCoordinatesOfPoints(points)
+	
+	self.displayAllPoints()
+	inputs = self.__askUserForPoints(2)
+	points = self.__convertInputToPoints(inputs)
+	coordinates = self.__getXandYCoordinatesOfPoints(points)
 	# use utility function to get the distance between two points 
 	# pass in coordinates as an argument
-  distance = self.__solveDistanceBetweenTwoPoints(coordinates)
+	distance = self.__solveDistanceBetweenTwoPoints(coordinates)
 	print(f'\nThe distance is {distance}\n')
 
-# Possible to return, not necessary now
-#return distance
+	#Possible to return, not necessary now
+	#return distance
 ```
