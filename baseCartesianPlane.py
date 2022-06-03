@@ -42,11 +42,11 @@ class CartesianPlane:
         return name
 
 
-    def addPoint(self, index=None):
+    def addPoint(self):
         print("\nAdd Point\n")
         xCoordinate, yCoordinate = self.__getPointXandYCoordinates()
         name = self.__getPointName()
-        _index = len(self.__listOfPoints) if index == None else index
+        _index = self.getNumberOfPoints()
 
         self.__listOfPoints.append(Point(xCoordinate, yCoordinate, name, _index))
         print(f"\nPoint {name}: (x: {xCoordinate}, y: {yCoordinate}) added in the Cartesian Plane\n")
@@ -60,7 +60,7 @@ class CartesianPlane:
             return 
 
         for i in range(numberOfPoints):
-            self.addPoint(i)
+            self.addPoint()
 
     
     def displayAllPoints(self):

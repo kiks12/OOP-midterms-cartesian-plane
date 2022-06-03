@@ -56,11 +56,11 @@ class CartesianPlane:
         return name
 
 
-    def addPoint(self, index=None):
+    def addPoint(self):
         print("\nAdd Point\n")
         xCoordinate, yCoordinate = self.__getPointXandYCoordinates()
         name = self.__getPointName()
-        _index = len(self.__listOfPoints) if index == None else index
+        _index = len(self.__listOfPoints)
 
         self.__listOfPoints.append(Point(xCoordinate, yCoordinate, name, _index))
         print(f"\nPoint {name}: (x: {xCoordinate}, y: {yCoordinate}) added in the Cartesian Plane\n")
@@ -74,7 +74,7 @@ class CartesianPlane:
             return 
 
         for i in range(numberOfPoints):
-            self.addPoint(i)
+            self.addPoint()
 
     
     def displayAllPoints(self):
@@ -171,15 +171,18 @@ class CartesianPlane:
         return distance
 
 
-    def __pointsAreColinear(self, firstY, firstX, secondY, secondX, thirdY, thirdX):
+    def __pointsAreColinear(self, coordinates):
+        firstX = coordinates.get('firstX')
+        firstY = coordinates.get('firstY')
+        secondX = coordinates.get('secondX')
+        secondY = coordinates.get('secondY')
+        thirdX = coordinates.get('thirdX')
+        thirdY = coordinates.get('thirdY')
+
         firstSecondSlope = self.__getSlope(firstY, secondY, firstX, secondX)
         secondThirdSlope = self.__getSlope(secondY, thirdY, secondX, thirdX)
         firstThirdSlope = self.__getSlope(firstY, thirdY, firstX, thirdX)
-        print(f"""
-            slope#1 = {firstSecondSlope}
-            slope#2 = {secondThirdSlope}
-            slope#3 = {firstThirdSlope}
-              """)
+
         return firstSecondSlope == secondThirdSlope and secondThirdSlope == firstThirdSlope 
 
     
@@ -207,9 +210,31 @@ class CartesianPlane:
 
 
     # A = 1/2 * abs(x1y2 + x2y3 + x3y1 - x1y3 - x2y1 - x3y2)
-    def __solveAreaOfTriangle(self, firstY, firstX, secondY, secondX, thirdY, thirdX):
+    def __solveAreaOfTriangle(self, coordinates):
+        firstX = coordinates.get('firstX')
+        firstY = coordinates.get('firstY')
+        secondX = coordinates.get('secondX')
+        secondY = coordinates.get('secondY')
+        thirdX = coordinates.get('thirdX')
+        thirdY = coordinates.get('thirdY')
+
         firstSolution = (firstX*secondY) + (secondX*thirdY) + (thirdX*firstY) - (firstX*thirdY) - (secondX*firstY) - (thirdX*secondY)
         return abs(firstSolution) / 2
+
+
+    def __colinearCallback(self, points, coordinates):
+        print("\nThe 3 points are Colinear\n")
+        minPoint, maxPoint = self.__getLineEndpoints(points)
+        #print(f"min: {minPoint}, max: {maxPoint}")
+        coordinates = self.__getXandYCoordinatesOfPoints([minPoint, maxPoint])
+        distance = self.__solveDistanceOfPoints(coordinates)
+        print(f"The distance of endpoints is {distance}")
+
+
+    def __coplanarCallback(self, coordinates):
+        print("\nThe 3 points are Coplanar\n")
+        area = self.__solveAreaOfTriangle(coordinates)
+        print(f"\nThe area of the triangle is {area}\n")
 
 
     def determineIfPointsAreColinearOrCoplanar(self):
@@ -221,30 +246,55 @@ class CartesianPlane:
         firstPoint, secondPoint, thirdPoint = self.__askUserForPoints(3)
         points = self.__convertInputToPoints([firstPoint, secondPoint, thirdPoint])
         coordinates = self.__getXandYCoordinatesOfPoints(points)
-        firstX = coordinates.get('firstX')
-        firstY = coordinates.get('firstY')
-        secondX = coordinates.get('secondX')
-        secondY = coordinates.get('secondY')
-        thirdX = coordinates.get('thirdX')
-        thirdY = coordinates.get('thirdY')
 
-        if (self.__pointsAreColinear(firstY, firstX, secondY, secondX, thirdY, thirdX)):
-            print("\nThe 3 points are Colinear\n")
-            minPoint, maxPoint = self.__getLineEndpoints(points)
-            coordinates = self.__getXandYCoordinatesOfPoints([minPoint, maxPoint])
-            distance = self.__solveDistanceOfPoints(coordinates)
-            print(f"The distance of endpoints is {distance}")
-            return 
+        if (self.__pointsAreColinear(coordinates)):
+            return self.__colinearCallback(points, coordinates)
 
-        print("\nThe 3 points are Coplanar\n")
-        print(coordinates)
-        area = self.__solveAreaOfTriangle(firstY, firstX, secondY, secondX, thirdY, thirdX)
-        print(f"\nThe area of the triangle is {area}\n")
+        self.__coplanarCallback(coordinates)
 
 
+cartesian = CartesianPlane()
 
-cart = CartesianPlane()
-cart.addMultiplePoints()
-#cart.distanceBetweenTwoPoints()
-cart.determineIfPointsAreColinearOrCoplanar()
+while True:
+    """
+    print instructions
+    """
+    print('\nCARTESIAN PLANE PROGRAM1\n')
+    print('\nInstructions\n')
+    print('[1] Add a single Point')
+    print('[2] Add Multiple Points')
+    print('[3] Display Points')
+    print('[4] Check Distance between two points')
+    print('[5] Check if 3 points are Colinear or Coplanar')
+    print('[0] exit\n')
+
+    option = int(input("Enter your option: "))
+
+    if option == 1:
+        cartesian.addPoint()
+        continue
+
+    if option == 2:
+        cartesian.addMultiplePoints()
+        continue
+
+    if option == 3:
+        cartesian.displayAllPoints()
+        continue
+
+    if option == 4:
+        cartesian.distanceBetweenTwoPoints()
+        continue
+
+    if option == 5:
+        cartesian.determineIfPointsAreColinearOrCoplanar()
+        continue
+
+    if option == 0:
+        print('Exiting...')
+        break
+
+
+
+
 
