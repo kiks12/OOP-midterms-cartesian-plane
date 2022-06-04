@@ -2,8 +2,8 @@
 class CartesianPlaneService:
 
 
-    __VALID_POINT_NAMES = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    __INVALID_POINT_NAMES = "0123456789-=+_)(*&^%$#@!`~{[]}\|:;,<>./?"     
+    VALID_POINT_NAMES = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    INVALID_POINT_NAMES = "0123456789-=+_)(*&^%$#@!`~{[]}\|:;,<>./?"     
     __INDEX_TO_WORD_CONVERSION = {
         0: 'first',
         1: 'second',
@@ -39,7 +39,7 @@ class CartesianPlaneService:
                 name = str(input("Enter the name of point: "))
                 if len(name) > 1: 
                     print("\nMake sure you are using a one letter name (a, A, b, B)\n")
-                if name in self.__INVALID_POINT_NAMES:
+                if name in self.INVALID_POINT_NAMES:
                     print("\nInvalid Input! cannot set symbols as a name of point!\n")
 
                 return name
@@ -67,20 +67,28 @@ class CartesianPlaneService:
     # based on the given numberOfPoints parameter, the function will ask the same number of points 
     # as an input. i.e. numberOfPoints=3, input 1, input 2, and input 3 
     # this will return the inputs
-    def askUserForPoints(self, numberOfPoints: int):
-        inputs = [None] * numberOfPoints 
+    def askUserForPoints(self, numberOfPointsToAsk: int, numberOfPoints: int):
+        inputs = [None] * numberOfPointsToAsk
 
         print("Make sure to be consistent, if you used name for the first point, then use name for the second point.\n")
-        for i in range(numberOfPoints):
+        for i in range(numberOfPointsToAsk):
             while True:
-                point = input(f"Enter {self.__INDEX_TO_WORD_CONVERSION.get(i)} point to use: (name or index): ")
+                inputPoint = input(f"Enter {self.__INDEX_TO_WORD_CONVERSION.get(i)} point to use: (name or index): ")
 
-                if point in self.__VALID_POINT_NAMES and len(point) > 1:
-                    print('\nERROR\n')
+                if inputPoint not in self.VALID_POINT_NAMES and len(inputPoint) > 1:
+                    print('\nError: Invalid name\n')
                     continue
-                
+    
+                try:
+                     if int(inputPoint) > numberOfPoints - 1:
+                        print('\nError: index out of range\n')
+                        continue
+                except ValueError:
+                    pass
+
                 break
-            inputs[i] = point
+
+            inputs[i] = inputPoint
 
         return inputs 
 
@@ -133,10 +141,6 @@ class CartesianPlaneService:
         print("\nThe 3 points are Coplanar\n")
         area = self.__solveAreaOfTriangle(coordinates)
         print(f"\nThe area of the triangle is {area}\n")
-
-
-
-
 
 
 

@@ -6,23 +6,7 @@ from cartesianPlaneService import CartesianPlaneService
 
 class CartesianPlane:
 
-
-    __VALID_POINT_NAMES = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    __INVALID_POINT_NAMES = "0123456789-=+_)(*&^%$#@!`~{[]}\|:;,<>./?"     
-    __INDEX_TO_WORD_CONVERSION = {
-        0: 'first',
-        1: 'second',
-        2: 'third',
-        3: 'fourth',
-        4: 'fifth',
-        5: 'sixth',
-        6: 'seventh',
-        7: 'eighth',
-        8: 'ninth',
-        9: 'tenth'
-    }
-    
-
+   
     def __init__(self, service):
         self.__listOfPoints = []
         self.service = service
@@ -90,7 +74,7 @@ class CartesianPlane:
             print("\nCannot add only 1 point, if you want to add only one point use Add Point method\n")
             return 
 
-        for i in range(numberOfPoints):
+        for _ in range(numberOfPoints):
             self.addPoint()
 
     
@@ -106,7 +90,7 @@ class CartesianPlane:
     
 
     def getPoint(self, _input):
-        if _input in self.__VALID_POINT_NAMES:
+        if _input in self.service.VALID_POINT_NAMES:
             return self.service.getPointFromName(_input, self.__listOfPoints)
         return self.service.getPointFromIndex(int(_input), self.__listOfPoints)
 
@@ -126,7 +110,7 @@ class CartesianPlane:
             return
 
         self.displayAllPoints()
-        inputs = self.service.askUserForPoints(2)
+        inputs = self.service.askUserForPoints(2, self.getNumberOfPoints())
         points = self.service.convertInputToPoints(inputs, self)
         coordinates = self.service.getXandYCoordinatesOfPoints(points)
         distance = self.service.solveDistanceBetweenTwoPoints(coordinates) 
@@ -187,7 +171,7 @@ class CartesianPlane:
             return
 
         self.displayAllPoints()
-        inputs = self.service.askUserForPoints(3)
+        inputs = self.service.askUserForPoints(3, self.getNumberOfPoints())
         points = self.service.convertInputToPoints(inputs, self)
         coordinates = self.service.getXandYCoordinatesOfPoints(points)
 
