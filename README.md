@@ -3,7 +3,8 @@
 Classes:
 
 - Point
-- Plane (Cartesian Plane)
+- Cartesian Plane
+- Cartesian Plane Service
 
 <br>
 <br>
@@ -60,7 +61,8 @@ determine the distance between two points
 <br>
 
 ## CartesianPlaneService
-(Utility functions are used inside methods. Reusable codes): 
+(Utility functions are used inside methods. Reusable codes). This class will be injected to CartesianPlane as the service of that class. 
+This essentially handles all the background logic of CartesianPlane. (Dependency Injection)
 
 ### askUserForXandYCoordinates()
 This will only ask the user for x and y coordinates for a point.
@@ -75,6 +77,7 @@ This will return the point in the given index from listOfPoints
 
 ### getPointFromName(name: str, listOfPoints: Point[])
 This will return the point in which the name of the point is equal to the argument
+
 
 ### askUserForPoints(numberOfPoints: int)
 This function will ask the user which points to be used depending on the given numberOfPoints. If numberOfPoints is 3 then this function will only ask for 3 inputs. This will return the inputs of the user in an array/list. i.e. [a, b] for name or [0, 3] for index
@@ -108,6 +111,7 @@ inputs = self.service.askUserForPoints(2)
 # secondInput = b
 ```
 
+
 ### convertInputToPoints(inputs: any[], cartesianPlane: CartesianPlane)
 This function will use the inputs from __askUserForInputs and return its corresponding Point on the cartesian plane.
 
@@ -121,6 +125,7 @@ points = self.service.convertInputToPoints(inputs, self)
 # inputs = [a, b]
 # OUTPUT: [Point a, Point b]
 ```
+
 
 ### getXandYCoordinatesOfPoints(points: Point[])
 This function will use the points returned by __convertInputToPoints and get all x and y coordinates of each point. i.e. {’firstX’: 0, ‘firstY’: 1}
@@ -146,6 +151,7 @@ coordinates = self.service.getXandYCoordinatesOfPoints(points)
 # wherein firstX is the value of x coordinate of Point a and firstY is the value
 # of y coordinate of Point a. So on and so forth.
 ```
+
 
 ### solveDistanceBetweenTwoPoints(coordinates: dictionary)
 Using the formula sqrt((x2-x1)^2 + (y2-y1)^2), this will solve the distance between two points wherein their x and y coordinates are inside the coordinates dictionary (parameter).
