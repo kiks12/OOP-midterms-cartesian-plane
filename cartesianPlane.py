@@ -27,7 +27,14 @@ class CartesianPlane:
             print('[6] Check if 3 points are Colinear or Coplanar')
             print('[0] exit\n')
 
-            option = int(input("Enter your option: "))
+            try:
+                option = int(input("Enter your option: "))
+                if option not in [0,1,2,3,4,5,6]:
+                    print('\nError: unknown option, please input only 0-6')
+                    continue
+            except ValueError:
+                print('\nError: input only integers from 0-6')
+                continue
 
             if option == 1:
                 cartesian.addPoint()
