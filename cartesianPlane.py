@@ -21,7 +21,7 @@ class CartesianPlane:
             print('\nInstructions\n')
             print('[1] Add a single Point')
             print('[2] Add Multiple Points')
-            print('[3] Get a Point')
+            print('[3] Number of Points')
             print('[4] Display Points')
             print('[5] Check Distance between two points')
             print('[6] Check if 3 points are Colinear or Coplanar')
@@ -37,8 +37,9 @@ class CartesianPlane:
                 cartesian.addMultiplePoints()
                 continue
 
-#    if option == 3:
-#        print(cartesian.getPoint())
+            if option == 3:
+                print(f"\nThe number of points in the Cartesian Plane is {self.getNumberOfPoints()}") 
+                continue
 
             if option == 4:
                 cartesian.displayAllPoints()
