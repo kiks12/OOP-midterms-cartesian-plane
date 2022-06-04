@@ -79,7 +79,7 @@ This will return the point in the given index from listOfPoints
 This will return the point in which the name of the point is equal to the argument
 
 
-### askUserForPoints(numberOfPoints: int)
+### askUserForPoints(numberOfPointsToAsk: int, numberOfPoints: int)
 This function will ask the user which points to be used depending on the given numberOfPoints. If numberOfPoints is 3 then this function will only ask for 3 inputs. This will return the inputs of the user in an array/list. i.e. [a, b] for name or [0, 3] for index
 
 ```python
@@ -91,10 +91,10 @@ This function will ask the user which points to be used depending on the given n
 # between two points use this function
 
 # for unpacking/deconstructuring
-firstInput, secondInput = self.service.askUserForPoints(2)
+firstInput, secondInput = self.service.askUserForPoints(2, self.getNumberOfPoints)
 
 # for whole array
-inputs = self.service.askUserForPoints(2)
+inputs = self.service.askUserForPoints(2, self.getNumberOfPoints)
 
 # Point a: (x: 1, y: 2, index: 0)
 # Point b: (x: 2, y: 3, index: 1)
@@ -119,7 +119,7 @@ This function will use the inputs from __askUserForInputs and return its corresp
 # when you have inputs from users about which points to use, you can convert
 # their inputs to Point using this function
 
-inputs = self.service.askUserForPoints(2)
+inputs = self.service.askUserForPoints(2, self.getNumberOfPoints)
 points = self.service.convertInputToPoints(inputs, self)
 
 # inputs = [a, b]
@@ -134,7 +134,7 @@ This function will use the points returned by __convertInputToPoints and get all
 # Now that you have the corresponding points of the user inputs, you can get 
 # the x and y coordinates of each Point with this utility function.
 
-inputs = self.service.askUserForPoints(2)
+inputs = self.service.askUserForPoints(2, self.getNumberOfPoints)
 points = self.service.convertInputToPoints(inputs, self)
 coordinates = self.service.getXandYCoordinatesOfPoints(points)
 
@@ -163,7 +163,7 @@ def distanceBetweenTwoPoints(self):
 		  return
 	
 	self.displayAllPoints()
-	inputs = self.service.askUserForPoints(2)
+	inputs = self.service.askUserForPoints(2, self.getNumberOfPoints)
 	points = self.service.convertInputToPoints(inputs, self)
 	coordinates = self.service.getXandYCoordinatesOfPoints(points)
 	# use utility function to get the distance between two points 
