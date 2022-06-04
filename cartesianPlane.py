@@ -1,5 +1,6 @@
 
 from point import Point
+from cartesianPlaneService import CartesianPlaneService
 
 
 
@@ -22,44 +23,60 @@ class CartesianPlane:
     }
     
 
-    def __init__(self):
+    def __init__(self, service):
         self.__listOfPoints = []
+        self.service = service
 
 
-    def __getPointXandYCoordinates(self):
+    def exec(self):
         while True:
-            try:
-                xCoordinate = int(input('Enter x coordinate of point: '))
-                yCoordinate = int(input('Enter y coordinate of point: '))
-                break
-            except ValueError: 
-                print('\nERROR: please input a correct value for coordinate (integer)\n')
-                continue
-        return (xCoordinate, yCoordinate)
+            """
+            print instructions
+            """
+            print('\nCARTESIAN PLANE PROGRAM1\n')
+            print('\nInstructions\n')
+            print('[1] Add a single Point')
+            print('[2] Add Multiple Points')
+            print('[3] Get a Point')
+            print('[4] Display Points')
+            print('[5] Check Distance between two points')
+            print('[6] Check if 3 points are Colinear or Coplanar')
+            print('[0] exit\n')
 
+            option = int(input("Enter your option: "))
 
-    def __getPointName(self):
-        while True:
-            try:
-                name = str(input("Enter the name of point: "))
-                if len(name) > 1: 
-                    print("\nMake sure you are using a one letter name (a, A, b, B)\n")
-                    continue
-                if name in self.__INVALID_POINT_NAMES:
-                    print("\nInvalid Input! cannot set symbols as a name of point!\n")
-                    continue
-                break
-            except ValueError:
-                print('\nError\n')
+            if option == 1:
+                cartesian.addPoint()
                 continue
 
-        return name
+            if option == 2:
+                cartesian.addMultiplePoints()
+                continue
+
+#    if option == 3:
+#        print(cartesian.getPoint())
+
+            if option == 4:
+                cartesian.displayAllPoints()
+                continue
+
+            if option == 5:
+                cartesian.distanceBetweenTwoPoints()
+                continue
+
+            if option == 6:
+                cartesian.determineIfPointsAreColinearOrCoplanar()
+                continue
+
+            if option == 0:
+                print('Exiting...')
+                break
 
 
     def addPoint(self):
         print("\nAdd Point\n")
-        xCoordinate, yCoordinate = self.__getPointXandYCoordinates()
-        name = self.__getPointName()
+        xCoordinate, yCoordinate = self.service.askUserForXandYCoordinates()
+        name = self.service.askUserForPointName()
         _index = len(self.__listOfPoints)
 
         self.__listOfPoints.append(Point(xCoordinate, yCoordinate, name, _index))
@@ -88,72 +105,19 @@ class CartesianPlane:
         print('\n')
     
 
-    def getPointFromIndex(self, index: int):
-        if index > len(self.__listOfPoints) - 1:
-            print('\nIndex out of Range\n')
-            return None
-
-        return self.__listOfPoints[index]
-    
-
-    def getPointFromName(self, name: str):
-        for point in self.__listOfPoints:
-            if point.name == name:
-                return point
-        return None
+    def getPoint(self, _input):
+        if _input in self.__VALID_POINT_NAMES:
+            return self.service.getPointFromName(_input, self.__listOfPoints)
+        return self.service.getPointFromIndex(int(_input), self.__listOfPoints)
 
 
     def getNumberOfPoints(self):
         return len(self.__listOfPoints)
 
 
-    def __askUserForPoints(self, numberOfPoints: int):
-        points = [None] * numberOfPoints 
-
-        print("Make sure to be consistent, if you used name for the first point, then use name for the second point.\n")
-        for i in range(numberOfPoints):
-            while True:
-                point = input(f"Enter {self.__INDEX_TO_WORD_CONVERSION.get(i)} point to use: (name or index): ")
-
-                if point in self.__VALID_POINT_NAMES and len(point) > 1:
-                    print('\nERROR\n')
-                    continue
-                
-                break
-            points[i] = (point)
-
-        return points
-
-
-    def __convertInputToPoints(self, inputs):
-        if inputs[0] in self.__VALID_POINT_NAMES:
-            return [self.getPointFromName(val) for val in inputs]
-
-        return [self.getPointFromIndex(int(val)) for val in inputs]
-
-
-    def __getXandYCoordinatesOfPoints(self, arr):
-        coordinates = {}
-        for idx, val in enumerate(arr):
-            x, y = val.getCoordinates()
-            coordinates[F"{self.__INDEX_TO_WORD_CONVERSION.get(idx)}X"] = x
-            coordinates[F"{self.__INDEX_TO_WORD_CONVERSION.get(idx)}Y"] = y
-
-        return coordinates
-
-
     def __getSlope(self, ySubOne, ySubTwo, xSubOne, xSubTwo):
         slope = (ySubTwo - ySubOne) / (xSubTwo - xSubOne)
         return slope
-
-
-    # solution for distance between two points 
-    # d = sqrt((x2-x1)^2 + (y2-y1)^2)
-    # this is a private utility function for the distanceBetweenTwoPoints method
-    def __solveDistanceOfPoints(self, coordinates):
-        xComponent = (coordinates.get('secondX') - coordinates.get('firstX')) ** 2
-        yComponent = (coordinates.get('secondY') - coordinates.get('firstY')) ** 2
-        return (xComponent + yComponent) ** 0.5
 
                 
     def distanceBetweenTwoPoints(self):
@@ -162,10 +126,10 @@ class CartesianPlane:
             return
 
         self.displayAllPoints()
-        firstPoint, secondPoint = self.__askUserForPoints(2)
-        points = self.__convertInputToPoints([firstPoint, secondPoint])
-        coordinates = self.__getXandYCoordinatesOfPoints(points)
-        distance = self.__solveDistanceOfPoints(coordinates) 
+        inputs = self.service.askUserForPoints(2)
+        points = self.service.convertInputToPoints(inputs, self)
+        coordinates = self.service.getXandYCoordinatesOfPoints(points)
+        distance = self.service.solveDistanceBetweenTwoPoints(coordinates) 
         print(f'\nThe distance is {distance}\n')
         return distance
 
@@ -208,32 +172,13 @@ class CartesianPlane:
         return [_min, _max]
 
 
-    # A = 1/2 * abs(x1y2 + x2y3 + x3y1 - x1y3 - x2y1 - x3y2)
-    def __solveAreaOfTriangle(self, coordinates):
-        firstX = coordinates.get('firstX')
-        firstY = coordinates.get('firstY')
-        secondX = coordinates.get('secondX')
-        secondY = coordinates.get('secondY')
-        thirdX = coordinates.get('thirdX')
-        thirdY = coordinates.get('thirdY')
-
-        firstSolution = (firstX*secondY) + (secondX*thirdY) + (thirdX*firstY) - (firstX*thirdY) - (secondX*firstY) - (thirdX*secondY)
-        return abs(firstSolution) / 2
-
-
     def __colinearCallback(self, points, coordinates):
         print("\nThe 3 points are Colinear\n")
         minPoint, maxPoint = self.__getLineEndpoints(points)
         #print(f"min: {minPoint}, max: {maxPoint}")
-        coordinates = self.__getXandYCoordinatesOfPoints([minPoint, maxPoint])
-        distance = self.__solveDistanceOfPoints(coordinates)
+        coordinates = self.service.getXandYCoordinatesOfPoints([minPoint, maxPoint])
+        distance = self.service.solveDistanceBetweenTwoPoints(coordinates)
         print(f"The distance of endpoints is {distance}")
-
-
-    def __coplanarCallback(self, coordinates):
-        print("\nThe 3 points are Coplanar\n")
-        area = self.__solveAreaOfTriangle(coordinates)
-        print(f"\nThe area of the triangle is {area}\n")
 
 
     def determineIfPointsAreColinearOrCoplanar(self):
@@ -242,58 +187,16 @@ class CartesianPlane:
             return
 
         self.displayAllPoints()
-        firstPoint, secondPoint, thirdPoint = self.__askUserForPoints(3)
-        points = self.__convertInputToPoints([firstPoint, secondPoint, thirdPoint])
-        coordinates = self.__getXandYCoordinatesOfPoints(points)
+        inputs = self.service.askUserForPoints(3)
+        points = self.service.convertInputToPoints(inputs, self)
+        coordinates = self.service.getXandYCoordinatesOfPoints(points)
 
         if (self.__pointsAreColinear(coordinates)):
             return self.__colinearCallback(points, coordinates)
 
-        self.__coplanarCallback(coordinates)
+        self.service.coplanarCallback(coordinates)
 
 
-cartesian = CartesianPlane()
-
-while True:
-    """
-    print instructions
-    """
-    print('\nCARTESIAN PLANE PROGRAM1\n')
-    print('\nInstructions\n')
-    print('[1] Add a single Point')
-    print('[2] Add Multiple Points')
-    print('[3] Display Points')
-    print('[4] Check Distance between two points')
-    print('[5] Check if 3 points are Colinear or Coplanar')
-    print('[0] exit\n')
-
-    option = int(input("Enter your option: "))
-
-    if option == 1:
-        cartesian.addPoint()
-        continue
-
-    if option == 2:
-        cartesian.addMultiplePoints()
-        continue
-
-    if option == 3:
-        cartesian.displayAllPoints()
-        continue
-
-    if option == 4:
-        cartesian.distanceBetweenTwoPoints()
-        continue
-
-    if option == 5:
-        cartesian.determineIfPointsAreColinearOrCoplanar()
-        continue
-
-    if option == 0:
-        print('Exiting...')
-        break
-
-
-
-
+cartesian = CartesianPlane(CartesianPlaneService())
+cartesian.exec()
 
