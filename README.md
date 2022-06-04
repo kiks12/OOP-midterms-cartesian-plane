@@ -24,7 +24,7 @@ Methods:
 <br>
 <br>
 
-## **Cartesian Plane**
+## **CartesianPlane**
 
 Properties:
 
@@ -59,35 +59,39 @@ determine the distance between two points
 <br>
 <br>
 
-## Utility Functions
+## CartesianPlaneService
 (Utility functions are used inside methods. Reusable codes): 
 
-### __getPointXandYCoordinates()
+### askUserForXandYCoordinates()
 This will only ask the user for x and y coordinates for a point.
 
-### __getPointName()
+### askUserForPointName()
 This will ask the user for a point name.
 
 
-### __getPointFromIndex(index: int)
+### getPointFromIndex(index: int, listOfPoints: Point[])
 This will return the point in the given index from listOfPoints
 
 
-### __getPointFromName(name: str)
+### getPointFromName(name: str, listOfPoints: Point[])
 This will return the point in which the name of the point is equal to the argument
 
-### __askUserForPoints(numberOfPoints: int)
+### askUserForPoints(numberOfPoints: int)
 This function will ask the user which points to be used depending on the given numberOfPoints. If numberOfPoints is 3 then this function will only ask for 3 inputs. This will return the inputs of the user in an array/list. i.e. [a, b] for name or [0, 3] for index
 
 ```python
+# GIVEN THAT SELF is CARTESIAN PLANE
+
+## NOTE: ALL OF THESE ARE EXAMPLES OF CODES INSIDE CARTESIAN PLANE CLASS METHODS ##
+
 # if you want to ask users which points to use for, example, solving the distance
 # between two points use this function
 
 # for unpacking/deconstructuring
-firstInput, secondInput = self.__askUserForPoints(2)
+firstInput, secondInput = self.service.askUserForPoints(2)
 
 # for whole array
-inputs = self.__askUserForPoints(2)
+inputs = self.service.askUserForPoints(2)
 
 # Point a: (x: 1, y: 2, index: 0)
 # Point b: (x: 2, y: 3, index: 1)
@@ -104,30 +108,30 @@ inputs = self.__askUserForPoints(2)
 # secondInput = b
 ```
 
-### __convertInputToPoints(inputs: any[])
+### convertInputToPoints(inputs: any[], cartesianPlane: CartesianPlane)
 This function will use the inputs from __askUserForInputs and return its corresponding Point on the cartesian plane.
 
 ```python
 # when you have inputs from users about which points to use, you can convert
 # their inputs to Point using this function
 
-inputs = self.__askUserForPoints(2)
-points = self.__convertInputToPoints(inputs)
+inputs = self.service.askUserForPoints(2)
+points = self.service.convertInputToPoints(inputs, self)
 
 # inputs = [a, b]
 # OUTPUT: [Point a, Point b]
 ```
 
-### __getXandYCoordinatesOfPoints(points: Point[])
+### getXandYCoordinatesOfPoints(points: Point[])
 This function will use the points returned by __convertInputToPoints and get all x and y coordinates of each point. i.e. {’firstX’: 0, ‘firstY’: 1}
 
 ```python
 # Now that you have the corresponding points of the user inputs, you can get 
 # the x and y coordinates of each Point with this utility function.
 
-inputs = self.__askUserForPoints(2)
-points = self.__convertInputToPoints(inputs)
-coordinates = self.__getXandYCoordinatesOfPoints(points)
+inputs = self.service.askUserForPoints(2)
+points = self.service.convertInputToPoints(inputs, self)
+coordinates = self.service.getXandYCoordinatesOfPoints(points)
 
 # inputs = [a, b]
 # points = [Point a, Point b]
@@ -143,7 +147,7 @@ coordinates = self.__getXandYCoordinatesOfPoints(points)
 # of y coordinate of Point a. So on and so forth.
 ```
 
-### __solveDistanceBetweenTwoPoints(coordinates: dictionary)
+### solveDistanceBetweenTwoPoints(coordinates: dictionary)
 Using the formula sqrt((x2-x1)^2 + (y2-y1)^2), this will solve the distance between two points wherein their x and y coordinates are inside the coordinates dictionary (parameter).
 
 ```python
@@ -153,12 +157,12 @@ def distanceBetweenTwoPoints(self):
 		  return
 	
 	self.displayAllPoints()
-	inputs = self.__askUserForPoints(2)
-	points = self.__convertInputToPoints(inputs)
-	coordinates = self.__getXandYCoordinatesOfPoints(points)
+	inputs = self.service.askUserForPoints(2)
+	points = self.service.convertInputToPoints(inputs, self)
+	coordinates = self.service.getXandYCoordinatesOfPoints(points)
 	# use utility function to get the distance between two points 
 	# pass in coordinates as an argument
-	distance = self.__solveDistanceBetweenTwoPoints(coordinates)
+	distance = self.service.solveDistanceBetweenTwoPoints(coordinates)
 	print(f'\nThe distance is {distance}\n')
 
 	#Possible to return, not necessary now
