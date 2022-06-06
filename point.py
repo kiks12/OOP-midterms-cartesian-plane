@@ -12,5 +12,3 @@ class Point:
 
     def __str__(self):
         return f"Point {self.name} (x: {self.__x}, y: {self.__y} index: {self.index})"
-
-
