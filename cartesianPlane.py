@@ -11,9 +11,7 @@ class CartesianPlane:
 
     def exec(self):
         while True:
-            """
-            print instructions
-            """
+            # print instructions
             print('\nCARTESIAN PLANE PROGRAM\n')
             print('\nInstructions\n')
             print('[1] Add a single Point')
@@ -103,7 +101,7 @@ class CartesianPlane:
         try:
             slope = (ySubTwo - ySubOne) / (xSubTwo - xSubOne)
             return slope
-        except:
+        except ZeroDivisionError:
             print('\nThe Slope is undefined\n')
             return None
 
