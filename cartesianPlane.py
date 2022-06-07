@@ -62,11 +62,11 @@ class CartesianPlane:
     def addPoint(self):
         print("\nADD POINT\n")
         xCoordinate, yCoordinate = self.service.askUserForXandYCoordinates()
-        name = self.service.askUserForPointName()
-        _index = len(self.__listOfPoints)
+        pointName = self.service.askUserForPointName()
+        pointIndex = self.getNumberOfPoints()
 
-        self.__listOfPoints.append(Point(xCoordinate, yCoordinate, name, _index))
-        print(f"\nPoint {name}: (x: {xCoordinate}, y: {yCoordinate}) added in the Cartesian Plane\n")
+        self.__listOfPoints.append(Point(xCoordinate, yCoordinate, pointName, pointIndex))
+        print(f"\nPoint { pointName }: (x: { xCoordinate}, y: { yCoordinate }) added in the Cartesian Plane\n")
 
     def addMultiplePoints(self):
         print("\nADD MULTIPLE POINTS\n")
@@ -80,7 +80,7 @@ class CartesianPlane:
             self.addPoint()
 
     def displayAllPoints(self):
-        if len(self.__listOfPoints) == 0:
+        if self.getNumberOfPoints() == 0:
             print('\nNo Points in the Cartesian Plane\n')
             return 
 
@@ -97,52 +97,33 @@ class CartesianPlane:
     def getNumberOfPoints(self):
         return len(self.__listOfPoints)
 
-    def __getSlope(self, ySubOne, ySubTwo, xSubOne, xSubTwo):
-        try:
-            slope = (ySubTwo - ySubOne) / (xSubTwo - xSubOne)
-            return slope
-        except ZeroDivisionError:
-            print('\nThe Slope is undefined\n')
-            return None
-
     def distanceBetweenTwoPoints(self):
-        if len(self.__listOfPoints) < 2:
+        if self.getNumberOfPoints() < 2:
             print('\nCannot execute because number of points is Insufficient\n')
             return
 
         self.displayAllPoints()
         print('\nDISTANCE BETWEEN TWO POINTS\n')
-        inputs = self.service.askUserForPoints(2, self.getNumberOfPoints())
-        points = self.service.convertInputToPoints(inputs, self)
-        coordinates = self.service.getXandYCoordinatesOfPoints(points)
-        distance = self.service.solveDistanceBetweenTwoPoints(coordinates) 
-        print(f'\nThe distance is {distance}\n')
-        return distance
-
-    def __pointsAreColinear(self, coordinates):
-        firstX, firstY, secondX, secondY, thirdX, thirdY = coordinates.values()
-
-        firstSecondSlope = self.__getSlope(firstY, secondY, firstX, secondX)
-        secondThirdSlope = self.__getSlope(secondY, thirdY, secondX, thirdX)
-        firstThirdSlope = self.__getSlope(firstY, thirdY, firstX, thirdX)
-
-        return firstSecondSlope == secondThirdSlope and secondThirdSlope == firstThirdSlope 
+        inputPoints = self.service.askUserForPoints(2, self.getNumberOfPoints())
+        selectedPoints = self.service.convertInputToPoints(inputPoints, self)
+        pointsCoordinates = self.service.getXandYCoordinatesOfPoints(selectedPoints)
+        distance = self.service.solveDistanceBetweenTwoPoints(pointsCoordinates) 
+        print(f'\nThe distance is { distance }\n')
 
     def determineIfPointsAreColinearOrCoplanar(self):
-        if (len(self.__listOfPoints) < 3):
-            print('\nCannot execute because number of points is Insufficient\n')
+        if (self.getNumberOfPoints() < 3):
+            print('\nCannot execute because number of selectedPoints is Insufficient\n')
             return
 
         self.displayAllPoints()
         print('\nDETERMINE IF 3 POINTS ARE COLINEAR OR COPLANAR\n')
-        inputs = self.service.askUserForPoints(3, self.getNumberOfPoints())
-        points = self.service.convertInputToPoints(inputs, self)
-        coordinates = self.service.getXandYCoordinatesOfPoints(points)
+        inputPoints = self.service.askUserForPoints(3, self.getNumberOfPoints())
+        selectedPoints = self.service.convertInputToPoints(inputPoints, self)
+        pointsCoordinates = self.service.getXandYCoordinatesOfPoints(selectedPoints)
 
-        if (self.__pointsAreColinear(coordinates)):
-            return self.service.colinearCallback(points)
-
-        self.service.coplanarCallback(coordinates)
+        if (self.service.isColinear(pointsCoordinates, self)):
+            return self.service.colinearCallback(selectedPoints)
+        self.service.coplanarCallback(pointsCoordinates)
 
 
 cartesian = CartesianPlane(CartesianPlaneService())

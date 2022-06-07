@@ -33,16 +33,16 @@ class CartesianPlaneService:
     def askUserForPointName(self):
         while True:
             try:
-                name = str(input("Enter the name of point: "))
-                if len(name) > 1: 
+                pointName = str(input("Enter the name of point: "))
+                if len(pointName) > 1: 
                     print("\nMake sure you are using a one letter name (a, A, b, B)\n")
                     continue
 
-                if name not in self.VALID_POINT_NAMES:
+                if pointName not in self.VALID_POINT_NAMES:
                     print("\nInvalid Input! cannot set symbols as a name of point!\n")
                     continue
 
-                return name
+                return pointName
             except ValueError:
                 print('\nError: input only 1 character\n')
                 continue
@@ -65,7 +65,7 @@ class CartesianPlaneService:
     # as an input. i.e. numberOfPoints=3, input 1, input 2, and input 3 
     # this will return the inputs
     def askUserForPoints(self, numberOfPointsToAsk: int, numberOfPoints: int):
-        inputs = [None] * numberOfPointsToAsk
+        userInputs = [None] * numberOfPointsToAsk
         print("Be consistent, if you used name for the first point, then use name for the rest of the points.\n")
         for i in range(numberOfPointsToAsk):
             while True:
@@ -85,9 +85,9 @@ class CartesianPlaneService:
 
                 break
 
-            inputs[i] = inputPoint
+            userInputs[i] = inputPoint
 
-        return inputs 
+        return userInputs 
 
     # a reusable private utility function which converts the user inputs to its corresponding point
     # i.e. inputs [a, b] from point a, point b point c choices
@@ -100,13 +100,19 @@ class CartesianPlaneService:
     # in an array/list. i.e. [PointA, PointB],
     # return value is a dictionary of all coordinates {'firstX': 0, 'firstY': 1, ...}
     def getXandYCoordinatesOfPoints(self, arr):
-        coordinates = {}
+        pointCoordinates = {}
         for idx, val in enumerate(arr):
             x, y = val.getCoordinates()
-            coordinates[F"{self.__INDEX_TO_WORD_CONVERSION.get(idx)}X"] = x
-            coordinates[F"{self.__INDEX_TO_WORD_CONVERSION.get(idx)}Y"] = y
+            pointCoordinates[F"{self.__INDEX_TO_WORD_CONVERSION.get(idx)}X"] = x
+            pointCoordinates[F"{self.__INDEX_TO_WORD_CONVERSION.get(idx)}Y"] = y
 
-        return coordinates
+        return pointCoordinates
+
+    def __solveSlopeBetweenTwoPoints(self, ySubOne, ySubTwo, xSubOne, xSubTwo):
+        try:
+            return (ySubTwo - ySubOne)/(xSubTwo - xSubOne)
+        except ZeroDivisionError:
+            return "Vertical"
 
     # solution for distance between two points 
     # d = sqrt((x2-x1)^2 + (y2-y1)^2)
@@ -118,9 +124,19 @@ class CartesianPlaneService:
         yComponent = (secondY - firstY) ** 2
         return (xComponent + yComponent) ** 0.5
 
+    def isColinear(self, coordinates, plane):
+        if plane.getNumberOfPoints() == 2:
+            return True
+
+        firstX, firstY, secondX, secondY, thirdX, thirdY = coordinates.values()
+
+        slopeA = self.__solveSlopeBetweenTwoPoints(firstY, secondY, firstX, secondX)
+        slopeB = self.__solveSlopeBetweenTwoPoints(secondY, thirdY, secondX, thirdX)
+
+        return slopeA == slopeB
+
     def colinearCallback(self, points):
         print("\nThe 3 points are Colinear\n")
-        #minPoint, maxPoint = self.__getLineEndpoints(points)
         pointsFirstSecond = points[:2]
         pointsSecondThird = points[1:]
         pointsFirstThird = [point for idx, point in enumerate(points) if idx == 0 or idx == 2]
