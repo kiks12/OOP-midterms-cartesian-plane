@@ -3,7 +3,7 @@
 class CartesianPlaneService:
 
 
-    VALID_POINT_NAMES = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    __VALID_POINT_NAMES = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     __INDEX_TO_WORD_CONVERSION = {
         0: 'first',
         1: 'second',
@@ -38,7 +38,7 @@ class CartesianPlaneService:
                     print("\nMake sure you are using a one letter name (a, A, b, B)\n")
                     continue
 
-                if pointName not in self.VALID_POINT_NAMES:
+                if pointName not in self.__VALID_POINT_NAMES:
                     print("\nInvalid Input! cannot set symbols as a name of point!\n")
                     continue
 
@@ -60,7 +60,7 @@ class CartesianPlaneService:
                 return point
         return None
 
-    # this is the private utility function handling the user input collection
+    # this is the service function handling the user input collection
     # based on the given numberOfPoints parameter, the function will ask the same number of points 
     # as an input. i.e. numberOfPoints=3, input 1, input 2, and input 3 
     # this will return the inputs
@@ -71,7 +71,7 @@ class CartesianPlaneService:
             while True:
                 inputPoint = input(f"Enter {self.__INDEX_TO_WORD_CONVERSION.get(i)} point to use: (name or index): ")
 
-                if inputPoint not in self.VALID_POINT_NAMES and len(inputPoint) > 1:
+                if inputPoint not in self.__VALID_POINT_NAMES and len(inputPoint) > 1:
                     print('\nError: Invalid name\n')
                     continue
     
@@ -89,7 +89,7 @@ class CartesianPlaneService:
 
         return userInputs 
 
-    # a reusable private utility function which converts the user inputs to its corresponding point
+    # a reusable service function which converts the user inputs to its corresponding point
     # i.e. inputs [a, b] from point a, point b point c choices
     # the return value would be an array of all points corresponding to the inputs of the user
     # ---- NOTE: it is possible to use name or index as an input i.e. [a,b,C,D] for name or [0, 4, 2] for index ----
