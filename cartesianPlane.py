@@ -18,8 +18,8 @@ class CartesianPlane:
             print('\nInstructions\n')
             print('[1] Add a single Point')
             print('[2] Add Multiple Points')
-            print('[3] Number of Points')
-            print('[4] Display Points')
+            print('[3] Show Number of Points')
+            print('[4] Display All Points')
             print('[5] Check Distance between two points')
             print('[6] Check if 3 points are Colinear or Coplanar')
             print('[0] exit\n')
@@ -71,7 +71,7 @@ class CartesianPlane:
         print(f"\nPoint {name}: (x: {xCoordinate}, y: {yCoordinate}) added in the Cartesian Plane\n")
 
     def addMultiplePoints(self):
-        numberOfPoints = int(input("Enter number of points to add: "))
+        numberOfPoints = int(input("\nEnter number of points to add: "))
 
         if numberOfPoints <= 1:
             print("\nCannot add only 1 point, if you want to add only one point use Add Point method\n")
@@ -88,7 +88,7 @@ class CartesianPlane:
         print('\nDisplaying Points...\n')
         for point in self.__listOfPoints:
             print(point)
-        print('\n')
+        print()
 
     def getPoint(self, _input):
         if _input in self.service.VALID_POINT_NAMES:
@@ -129,36 +129,6 @@ class CartesianPlane:
 
         return firstSecondSlope == secondThirdSlope and secondThirdSlope == firstThirdSlope 
 
-    def __getLineEndpoints(self, points):
-        maxX = points[0].getCoordinates()[0]
-        minX = points[0].getCoordinates()[0]
-        maxY = points[0].getCoordinates()[1]
-        minY = points[0].getCoordinates()[1]
-        _min = points[0]
-        _max = points[0]
-
-        for point in points:
-            x, y = point.getCoordinates()
-
-            if x >= maxX and y >= maxY:
-                _max = point
-                maxX = x
-                maxY = y
-
-            if x <= minX and y <= minY:
-                _min = point
-                minX = x
-                minY = y
-
-        return [_min, _max]
-
-    def __colinearCallback(self, points):
-        print("\nThe 3 points are Colinear\n")
-        minPoint, maxPoint = self.__getLineEndpoints(points)
-        coordinates = self.service.getXandYCoordinatesOfPoints([minPoint, maxPoint])
-        distance = self.service.solveDistanceBetweenTwoPoints(coordinates)
-        print(f"The distance of endpoints is {distance}")
-
     def determineIfPointsAreColinearOrCoplanar(self):
         if (len(self.__listOfPoints) < 3):
             print('\nCannot execute because number of points is Insufficient\n')
@@ -170,11 +140,10 @@ class CartesianPlane:
         coordinates = self.service.getXandYCoordinatesOfPoints(points)
 
         if (self.__pointsAreColinear(coordinates)):
-            return self.__colinearCallback(points)
+            return self.service.colinearCallback(points)
 
         self.service.coplanarCallback(coordinates)
 
 
 cartesian = CartesianPlane(CartesianPlaneService())
 cartesian.exec()
-

@@ -124,6 +124,21 @@ class CartesianPlaneService:
         return (xComponent + yComponent) ** 0.5
 
 
+    def colinearCallback(self, points):
+        print("\nThe 3 points are Colinear\n")
+        #minPoint, maxPoint = self.__getLineEndpoints(points)
+        pointsFirstSecond = points[:2]
+        pointsSecondThird = points[1:]
+        pointsFirstThird = [point for idx, point in enumerate(points) if idx == 0 or idx == 2]
+        coordinatesFirstSecond = self.getXandYCoordinatesOfPoints(pointsFirstSecond)
+        coordinatesSecondThird = self.getXandYCoordinatesOfPoints(pointsSecondThird)
+        coordinatesFirstThird = self.getXandYCoordinatesOfPoints(pointsFirstThird)
+        distanceFirstSecond = self.solveDistanceBetweenTwoPoints(coordinatesFirstSecond)
+        distanceSecondThird = self.solveDistanceBetweenTwoPoints(coordinatesSecondThird)
+        distanceFirstThird = self.solveDistanceBetweenTwoPoints(coordinatesFirstThird)
+        print(f"The distance of endpoints is {max([distanceFirstSecond, distanceSecondThird, distanceFirstThird])}")
+
+
     # A = 1/2 * abs(x1y2 + x2y3 + x3y1 - x1y3 - x2y1 - x3y2)
     def __solveAreaOfTriangle(self, coordinates):
         firstX = coordinates.get('firstX')
