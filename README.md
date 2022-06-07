@@ -34,6 +34,9 @@ Properties:
 
 Methods: 
 
+### exec()
+This method will run the main loop of the Program
+
 ### addPoint()
 Used for adding a single point in the cartesian plane
 
@@ -41,21 +44,28 @@ Used for adding a single point in the cartesian plane
 Used to add multiple points in the cartesian plane. Asks the user how many points to add. Input Error on 1 - send an error message if the user inputs 1 as the number of points to add.
 
 ### displayAllPoints()
-will print all points in the cartesian plane (listOfPoints)
+Will print all points in the cartesian plane (listOfPoints)
 
 ### getPoint(input :str/int)
-will return the point using the input from the user
+Will return the point using the input from the user
 
 ### getNumberOfPoints()
-this will return the length of listOfPoints
+This will return the length of listOfPoints
 
 ### distanceBetweenTwoPoints()
-determine the distance between two points
+Determine the distance between two points
     - should send an error message if the points are insufficient
     - should also send an error message if the points are not in the listOfIndex
     - show the points to users
     - then ask the users which point to use
     - calculate the distance between two points
+    
+### threePointsAreColinearOrCoplanar()
+This will ask the user to input which 3 points from listOfPoints and determine if those points are colinear or coplanar.
+
+<br>
+
+If the 3 points are colinear, the method will invoke the service method colinearCallback(), otherwise, coplanarCallback().
     
 <br>
 <br>
@@ -64,8 +74,20 @@ determine the distance between two points
 (Utility functions are used inside methods. Reusable codes). This class will be injected to CartesianPlane as the service of that class. 
 This essentially handles all the background logic of CartesianPlane. (Dependency Injection)
 
+Properties: 
+
+### __VALID_POINT_NAMES
+Private Property containing all valid Point Names
+
+### __INDEX_TO_WORD_CONVERSION 
+Private Property used for the conversion of Indices to Words
+
+<br>
+
+Methods:
+
 ### askUserForXandYCoordinates()
-This will only ask the user for x and y coordinates for a point.
+This will ask the user for x and y coordinates for a point.
 
 ### askUserForPointName()
 This will ask the user for a point name.
@@ -80,7 +102,7 @@ This will return the point in which the name of the point is equal to the argume
 
 
 ### askUserForPoints(numberOfPointsToAsk: int, numberOfPoints: int)
-This function will ask the user which points to be used depending on the given numberOfPoints. If numberOfPoints is 3 then this function will only ask for 3 inputs. This will return the inputs of the user in an array/list. i.e. [a, b] for name or [0, 3] for index
+This method will ask the user which points to be used depending on the given numberOfPoints. If numberOfPoints is 3 then this function will only ask for 3 inputs. This will return the inputs of the user in an array/list. i.e. [a, b] for name or [0, 3] for index
 
 ```python
 # GIVEN THAT SELF is CARTESIAN PLANE
@@ -113,7 +135,7 @@ inputs = self.service.askUserForPoints(2, self.getNumberOfPoints())
 
 
 ### convertInputToPoints(inputs: any[], cartesianPlane: CartesianPlane)
-This function will use the inputs from __askUserForInputs and return its corresponding Point on the cartesian plane.
+This method will use the inputs from __askUserForInputs and return its corresponding Point on the cartesian plane.
 
 ```python
 # when you have inputs from users about which points to use, you can convert
@@ -128,7 +150,7 @@ points = self.service.convertInputToPoints(inputs, self)
 
 
 ### getXandYCoordinatesOfPoints(points: Point[])
-This function will use the points returned by __convertInputToPoints and get all x and y coordinates of each point. i.e. {’firstX’: 0, ‘firstY’: 1}
+This method will use the points returned by __convertInputToPoints and get all x and y coordinates of each point. i.e. {’firstX’: 0, ‘firstY’: 1}
 
 ```python
 # Now that you have the corresponding points of the user inputs, you can get 
@@ -174,3 +196,24 @@ def distanceBetweenTwoPoints(self):
 	#Possible to return, not necessary now
 	#return distance
 ```
+
+
+### __solveSlopeBetweenTwoPoints(ySubOne, ySubTwo, xSubOne, xSubTwo)
+Using the formula y2-y1/x2-x1 this method will calculate the slope of two points using the given parameters; x2, x1, y2, and y1.
+
+
+### isColinear(coordinates: dictionary, plane: CartesianPlane)
+This method is used in determining whether 3 points are colinear or not.
+
+
+### colinearCallback(points: Point[])
+This will be invoked inside determineIfPointsAreColinearOrCoplanar method of CartesianPlane as this will find the distance of endpoints if 3 points are colinear.
+
+
+### __solveAreaOfTriangle(coordinates: dictionary)
+With this formula - 1/2 * abs(x1(y2-y3) + x2(y3-y1) + x3(y1-y2)), this private service function will calculate the area of a triangle. This method will be invoked inside coplanarCallback().
+
+
+### coplanarCallback(coordinates: dictionary)
+This is the callback function that will be invoked in determineIfPointsAreColinearOrCoplanar method of CartesianPlane when the 3 points are coplanar. This will then proceed to calculate the area of the triangle.
+
