@@ -14,7 +14,7 @@ class CartesianPlane:
             """
             print instructions
             """
-            print('\nCARTESIAN PLANE PROGRAM1\n')
+            print('\nCARTESIAN PLANE PROGRAM\n')
             print('\nInstructions\n')
             print('[1] Add a single Point')
             print('[2] Add Multiple Points')
@@ -62,7 +62,7 @@ class CartesianPlane:
                 break
 
     def addPoint(self):
-        print("\nAdd Point\n")
+        print("\nADD POINT\n")
         xCoordinate, yCoordinate = self.service.askUserForXandYCoordinates()
         name = self.service.askUserForPointName()
         _index = len(self.__listOfPoints)
@@ -71,6 +71,7 @@ class CartesianPlane:
         print(f"\nPoint {name}: (x: {xCoordinate}, y: {yCoordinate}) added in the Cartesian Plane\n")
 
     def addMultiplePoints(self):
+        print("\nADD MULTIPLE POINTS\n")
         numberOfPoints = int(input("\nEnter number of points to add: "))
 
         if numberOfPoints <= 1:
@@ -85,7 +86,7 @@ class CartesianPlane:
             print('\nNo Points in the Cartesian Plane\n')
             return 
 
-        print('\nDisplaying Points...\n')
+        print('\nALL POINTS\n')
         for point in self.__listOfPoints:
             print(point)
         print()
@@ -99,8 +100,12 @@ class CartesianPlane:
         return len(self.__listOfPoints)
 
     def __getSlope(self, ySubOne, ySubTwo, xSubOne, xSubTwo):
-        slope = (ySubTwo - ySubOne) / (xSubTwo - xSubOne)
-        return slope
+        try:
+            slope = (ySubTwo - ySubOne) / (xSubTwo - xSubOne)
+            return slope
+        except:
+            print('\nThe Slope is undefined\n')
+            return None
 
     def distanceBetweenTwoPoints(self):
         if len(self.__listOfPoints) < 2:
@@ -108,6 +113,7 @@ class CartesianPlane:
             return
 
         self.displayAllPoints()
+        print('\nDISTANCE BETWEEN TWO POINTS\n')
         inputs = self.service.askUserForPoints(2, self.getNumberOfPoints())
         points = self.service.convertInputToPoints(inputs, self)
         coordinates = self.service.getXandYCoordinatesOfPoints(points)
@@ -116,12 +122,7 @@ class CartesianPlane:
         return distance
 
     def __pointsAreColinear(self, coordinates):
-        firstX = coordinates.get('firstX')
-        firstY = coordinates.get('firstY')
-        secondX = coordinates.get('secondX')
-        secondY = coordinates.get('secondY')
-        thirdX = coordinates.get('thirdX')
-        thirdY = coordinates.get('thirdY')
+        firstX, firstY, secondX, secondY, thirdX, thirdY = coordinates.values()
 
         firstSecondSlope = self.__getSlope(firstY, secondY, firstX, secondX)
         secondThirdSlope = self.__getSlope(secondY, thirdY, secondX, thirdX)
@@ -135,6 +136,7 @@ class CartesianPlane:
             return
 
         self.displayAllPoints()
+        print('\nDETERMINE IF 3 POINTS ARE COLINEAR OR COPLANAR\n')
         inputs = self.service.askUserForPoints(3, self.getNumberOfPoints())
         points = self.service.convertInputToPoints(inputs, self)
         coordinates = self.service.getXandYCoordinatesOfPoints(points)
