@@ -3,7 +3,7 @@
 class CartesianPlaneService:
 
 
-    __VALID_POINT_NAMES = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    VALID_POINT_NAMES = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     __INDEX_TO_WORD_CONVERSION = {
         0: 'first',
         1: 'second',
@@ -38,7 +38,7 @@ class CartesianPlaneService:
                     print("\nMake sure you are using a one letter name (a, A, b, B)\n")
                     continue
 
-                if pointName not in self.__VALID_POINT_NAMES:
+                if pointName not in self.VALID_POINT_NAMES:
                     print("\nInvalid Input! cannot set symbols as a name of point!\n")
                     continue
 
@@ -71,7 +71,7 @@ class CartesianPlaneService:
             while True:
                 inputPoint = input(f"Enter {self.__INDEX_TO_WORD_CONVERSION.get(i)} point to use: (name or index): ")
 
-                if inputPoint not in self.__VALID_POINT_NAMES and len(inputPoint) > 1:
+                if inputPoint not in self.VALID_POINT_NAMES and len(inputPoint) > 1:
                     print('\nError: Invalid name\n')
                     continue
     
